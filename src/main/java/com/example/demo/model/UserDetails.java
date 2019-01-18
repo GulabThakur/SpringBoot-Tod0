@@ -6,7 +6,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
 @Entity(name = "USERDETAILS")
+/*@JsonInclude(Include.NON_NULL)*/ // its use for allow non_null value
 public class UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

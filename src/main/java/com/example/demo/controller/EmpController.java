@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,12 +20,14 @@ import com.example.demo.service.IempService;
  */
 @RestController
 public class EmpController {
-
 	@Autowired
 	IempService service;
-	
-/*	@Autowired(required =true)
-	TokenStore tokenStore;*/
+
+	/*
+	 * @Autowired(required =true) TokenStore tokenStore;
+	 */
+
+	public static final Logger log = Logger.getLogger(EmpController.class);
 
 	/**
 	 * @param emp
@@ -32,23 +35,32 @@ public class EmpController {
 	 */
 	@RequestMapping(value = "/saveEmp", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> saveEmp(@RequestBody Employee emp) {
-		System.out.println("emp name"+emp.getEmpName()+"email :"+emp.getEmpEmail()+"PassWord :"+emp.getEmpPass());
-		service.addemp(emp);
+		log.info(">>>>>>>>adding process <<<<<<<<<<<");
+		log.info("emp name" + emp.getEmpName() + "email :" + emp.getEmpEmail() + "PassWord :" + emp.getEmpPass());
+		/*
+		 * System.out.println( "emp name" + emp.getEmpName() + "email :" +
+		 * emp.getEmpEmail() + "PassWord :" + emp.getEmpPass());
+		 */service.addemp(emp);
+		 log.info("its success fully addded in DB");
 		return new ResponseEntity<String>("sucessfull add user", HttpStatus.ACCEPTED);
 	}
 
-	@RequestMapping(value="/loginEmp",method=RequestMethod.GET,consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> loginEmp1(@RequestBody Employee emp){
-		//String userName =(String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		//tokenStore.
-		return new ResponseEntity<String>("sucessfull login",HttpStatus.ACCEPTED);
+	@RequestMapping(value = "/loginEmp", method = RequestMethod.GET, consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> loginEmp1(@RequestBody Employee emp) {
+		log.info("its time to login emp");
+		// String userName =(String)
+		// SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		// tokenStore.
+		return new ResponseEntity<String>("sucessfull login", HttpStatus.ACCEPTED);
 	}
+
 	/**
 	 * @param email
 	 * @return
 	 */
 	@RequestMapping(value = "/delEmp/email", method = RequestMethod.DELETE, consumes = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> deleteEmp(@PathVariable("email") Long email) {
+		log.info("you are doing delete");
 		service.delete(email);
 		return new ResponseEntity<String>("Delete emp", HttpStatus.ACCEPTED);
 	}
